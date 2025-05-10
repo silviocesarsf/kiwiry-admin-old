@@ -1,0 +1,45 @@
+import { createTheme, MantineTheme } from "@mantine/core";
+
+const greenPalette = [
+    '#e6f4ea',
+    '#c7e8ca',
+    '#a8d8aa',
+    '#89c78a',
+    '#6ab66a',
+    '#4ba54a',
+    '#2c943a',
+    '#1d832a',
+    '#1a7225',
+    '#166120'
+] as const;
+
+export const theme = createTheme({
+    fontFamily: 'Montserrat, sans-serif',
+    primaryColor: 'green',
+    colors: {
+        green: greenPalette
+    },
+    components: {
+        Button: {
+            defaultProps: {
+                size: 'lg',
+                radius: 'lg'
+            }
+        },
+        Input: {
+            styles: (theme: MantineTheme) => ({
+                input: {
+                    backgroundColor: theme.white,
+                    color: theme.colors.gray[10],
+                    '&:focus': {
+                        borderColor: theme.colors.green[7],
+                    },
+                }
+            }),
+            defaultProps: {
+                size: 'lg',
+                radius: 'lg'
+            }
+        }
+    },
+})

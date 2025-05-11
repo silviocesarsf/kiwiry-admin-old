@@ -9,6 +9,8 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import { theme } from './theme';
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 const router = createBrowserRouter([
     {

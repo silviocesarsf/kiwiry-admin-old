@@ -1,38 +1,96 @@
-import { ArrowLeftFromLine, ArrowRightFromLine, BeefIcon, ChartBar, MenuSquareIcon, ShoppingCart } from "lucide-react";
-import '../styles/home.css'
-import { useState } from "react";
+import { ArrowLeftRight, Bell, ChartNoAxesColumnIncreasing, EllipsisVertical, File, LogOut, Logs, Moon, Package, PanelLeft, SearchIcon, Settings } from "lucide-react"
+import { Input, Kbd, Menu } from "@mantine/core"
+import "../styles/Home.css"
+import { useRef, useState } from "react";
+import Dashboard from "./sections-home/Dashboard";
 
 export default function Home() {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const searchInputRef = useRef<HTMLInputElement>(null);
     const [activeSection, setActiveSection] = useState(0);
 
+    window.addEventListener("keyup", (e) => {
+        if (e.key == "k") {
+            searchInputRef.current?.focus();
+        }
+    });
+
     return (
-        <div className="h-screen w-full relative">
-            <div className={`sidebar absolute top-0 h-full bg-white flex flex-col items-center justify-start p-8 gap-7
-                transition-all duration-200 ease-in-out
-                ${sidebarOpen ? 'left-0 w-[300px]' : 'left-[-300px] w-0'}
-            `}>
-                <div className="w-full flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-primary">Kiwiry</h1>
-                    <div className="bg-primary rounded-l-xl p-2 flex items-center justify-center cursor-pointer" title="Esconder barra lateral">
-                        <ArrowLeftFromLine onClick={() => setSidebarOpen(false)} color="white" cursor={"pointer"} />
+        <div className="h-screen w-full relative flex">
+            <div className="sidebar bg-background h-screen  sticky top-0 left-0 p-4 flex flex-col items-center justify-between gap-4">
+                <div className="top w-full flex flex-col gap-4">
+                    <div className="flex items-center justify-between w-full border-b-gray-200 border-b pb-4">
+                        <span className="text-2xl">🥝</span>
+                        <PanelLeft className="text-gray-400" size={"1.7rem"} cursor={"pointer"} />
+                    </div>
+                    <div className="search-field w-full  border-b-gray-200 border-b pb-4">
+                        <Input
+                            ref={searchInputRef}
+                            leftSection={<SearchIcon size={"1.1rem"} />}
+                            rightSection={<Kbd>K</Kbd>}
+                            type="search"
+                            placeholder="Pesquisar"
+                        />
                     </div>
                 </div>
-                <nav className="h-full w-full flex flex-col items-start justify-center gap-8">
-                    <li onClick={() => setActiveSection(0)} className={`${activeSection == 0 ? "active" : ""}`}><ChartBar /> Dashboard</li>
-                    <li onClick={() => setActiveSection(1)} className={`${activeSection == 1 ? "active" : ""}`}><MenuSquareIcon /> Catálogo</li>
-                    <li onClick={() => setActiveSection(2)} className={`${activeSection == 2 ? "active" : ""}`}><BeefIcon /> Produtos</li>
-                    <li onClick={() => setActiveSection(3)} className={`${activeSection == 3 ? "active" : ""}`}><ShoppingCart /> Pedidos</li>
-                </nav>
+                <div className="middle w-full">
+                    <nav>
+                        <li
+                            onClick={() => setActiveSection(0)}
+                            className={`${activeSection == 0 ? "active" : ""}`}>
+                            <ChartNoAxesColumnIncreasing />Dashboard</li>
+                        <li
+                            onClick={() => setActiveSection(1)}
+                            className={`${activeSection == 1 ? "active" : ""}`}
+                        >
+                            <Package />Produtos
+                        </li>
+                        <li
+                            onClick={() => setActiveSection(2)}
+                            className={`${activeSection == 2 ? "active" : ""}`}
+                        >
+                            <File />Relatórios
+                        </li>
+                        <li
+                            onClick={() => setActiveSection(3)}
+                            className={`${activeSection == 3 ? "active" : ""}`}
+                        >
+                            <Logs />Catálogo
+                        </li>
+                    </nav>
+                </div>
+                <div className="bottom w-full border-t-gray-200 border-t py-4 flex items-center justify-between gap-4">
+                    <div className="photo min-w-[60px] h-[60px] overflow-hidden rounded-full">
+                        <img className="w-full h-full object-cover" src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+                    </div>
+                    <div className="user-infos w-full text-left">
+                        <h3 className="text-lg font-medium">Paulo Afonso</h3>
+                        <p className="text-sm text-gray-400" title="Empresa">Hookie</p>
+                    </div>
+                    <Menu shadow="md" width={200}>
+                        <Menu.Target>
+                            <div className="options">
+                                <EllipsisVertical color="#4ba54a" cursor={"pointer"} />
+                            </div>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                            <Menu.Item leftSection={<ArrowLeftRight />}>Alternar usuário</Menu.Item>
+                            <Menu.Item leftSection={<Settings />}>Configurações</Menu.Item>
+                            <Menu.Item leftSection={<LogOut />}>Sair</Menu.Item>
+                        </Menu.Dropdown>
+                    </Menu>
+                </div>
             </div>
-            <div className={`transition-all cursor-pointer duration-200 ease-in-out bg-primary rounded-r-xl p-2 absolute top-[45%] 
-                ${!sidebarOpen ? 'left-0' : 'left-[-300px] invisible'}`}
-                title="Exibir barra lateral"
-                onClick={() => setSidebarOpen(true)}>
-                <ArrowRightFromLine color="white" />
-            </div>
-            <div className={`content transition-all duration-200 ease-in-out p-8 w-full h-full ${sidebarOpen ? 'pl-[300px]' : 'pl-4'}`}>
-                <h1>Conteúdo</h1>
+            <div className="wrapper-content relative flex flex-col w-full bg-background">
+                <div className="topbar sticky top-0 h-16 w-full bg-background flex items-center justify-between p-4">
+                    <h1 className="text-xl font-bold text-secondary">Dashboard</h1>
+                    <div className="right flex gap-4">
+                        <Bell className="text-gray-500" cursor={"pointer"} />
+                        <Moon className="text-gray-500" cursor={"pointer"} />
+                    </div>
+                </div>
+                <div className="container-content w-full h-full bg-white rounded-t-2xl p-4">
+                    {activeSection == 0 && <Dashboard />}
+                </div>
             </div>
         </div>
     )

@@ -1,0 +1,19 @@
+.filters {
+    & li {
+        cursor: pointer;
+        padding: 2px 4px;
+        transition: .3s;
+        height: 100%;
+        color: var(--color-gray-500);
+        
+        &.active {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+
+        &:hover {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+    }
+}

@@ -7,7 +7,7 @@ const greenPalette = [
     '#89c78a',
     '#6ab66a',
     '#4ba54a',
-    '#2c943a',
+    '#8CB936',
     '#1d832a',
     '#1a7225',
     '#166120'
@@ -37,9 +37,9 @@ export const theme = createTheme({
                 }
             }),
             defaultProps: {
-                size: 'lg',
-                radius: 'lg'
-            }
+                size: 'md',
+                radius: 'md'
+            },
         }
     },
 })

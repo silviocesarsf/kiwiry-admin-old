@@ -14,12 +14,12 @@
         justify-content: flex-start;
         gap: 20px;
         padding: .7rem 2rem;
-        border-radius: 0px 10px 10px 0px;
+        border-radius: 10px;
         font-weight: 600;
         transition: .3s;
 
         &.active {
-            border-left: 15px solid var(--color-secondary);
+            border-left: 10px solid var(--color-secondary);
             color: #fff;
             background-color: var(--color-primary);
         }

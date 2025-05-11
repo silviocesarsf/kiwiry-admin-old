@@ -1,12 +1,13 @@
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
-  theme: {
-    extend: {
-        colors: {
-            
-        }
+    darkMode: 'class',
+    content: ['./src/**/*.{js,ts,jsx,tsx}'],
+    theme: {
+        extend: {
+            colors: {
+
+            }
+        },
     },
-  },
-  variants: {},
-  plugins: [],
+    variants: {},
+    plugins: [],
 }

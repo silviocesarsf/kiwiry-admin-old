@@ -5,7 +5,7 @@
         transition: .3s;
         height: 100%;
         color: var(--color-gray-500);
-        
+
         &.active {
             color: var(--color-primary);
             font-weight: 500;
@@ -15,5 +15,57 @@
             color: var(--color-primary);
             font-weight: 500;
         }
+    }
+}
+
+.grid-container .card {
+    border-radius: 6px;
+    height: 100%;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    transition: .3s;
+
+    &:hover {
+        border-color: var(--color-primary);
+
+        & .title {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+    }
+
+    & .title {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        color: var(--color-gray-400);
+        border-bottom: 1px solid var(--color-border);
+        padding: 1rem 2rem;
+        transition: .3s;
+
+        & .left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1em;
+        }
+
+        & .right>svg {
+            cursor: pointer;
+        }
+
+        & svg {
+            height: 17px;
+            width: 17px;
+        }
+    }
+
+    & .content {
+        height: 100%;
+        width: 100%;
+        padding: 2rem;
     }
 }

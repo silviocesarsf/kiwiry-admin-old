@@ -1,8 +1,9 @@
-import { ArrowLeftRight, Bell, ChartNoAxesColumnIncreasing, EllipsisVertical, File, LogOut, Logs, Moon, Package, PanelLeft, SearchIcon, Settings } from "lucide-react"
+import { ArrowLeftRight, Bell, ChartNoAxesColumnIncreasing, EllipsisVertical, File, LogOut, Logs, Package, PanelLeft, SearchIcon, Settings } from "lucide-react"
 import { Input, Kbd, Menu } from "@mantine/core"
 import "../styles/Home.css"
 import { useRef, useState } from "react";
 import Dashboard from "./sections-home/Dashboard";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function Home() {
     const searchInputRef = useRef<HTMLInputElement>(null);
@@ -85,7 +86,7 @@ export default function Home() {
                     <h1 className="text-xl font-bold text-secondary">Dashboard</h1>
                     <div className="right flex gap-4">
                         <Bell className="text-gray-500" cursor={"pointer"} />
-                        <Moon className="text-gray-500" cursor={"pointer"} />
+                        <ThemeToggle />
                     </div>
                 </div>
                 <div className="container-content w-full h-full bg-white rounded-t-2xl p-4">

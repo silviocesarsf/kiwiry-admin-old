@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     { path: '/register', element: <Register /> }
 ]);
 
-const colorSchemeManager = localStorageColorSchemeManager({ key: 'kiwiry-color-scheme' });
+const colorSchemeManager = localStorageColorSchemeManager({ key: 'kiwire-color-scheme' });
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
        <MantineProvider

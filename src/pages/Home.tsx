@@ -4,16 +4,28 @@ import "../styles/Home.css"
 import { useRef, useState } from "react";
 import Dashboard from "./sections-home/Dashboard";
 import ThemeToggle from "../components/ThemeToggle";
+import Products from "./sections-home/Products";
 
 export default function Home() {
     const searchInputRef = useRef<HTMLInputElement>(null);
-    const [activeSection, setActiveSection] = useState(0);
+    const [activeSection, setActiveSection] = useState(1);
 
     window.addEventListener("keyup", (e) => {
         if (e.key == "k") {
             searchInputRef.current?.focus();
         }
     });
+
+    const sectionsComponentsMap = [
+        {
+            component: <Dashboard />,
+            title: "Dashboard"
+        },
+        {
+            component: <Products />,
+            title: "Produtos"
+        },
+    ];
 
     return (
         <div className="h-screen w-full relative flex">
@@ -83,14 +95,14 @@ export default function Home() {
             </div>
             <div className="wrapper-content relative flex flex-col w-full bg-background">
                 <div className="topbar sticky top-0 h-16 w-full bg-background flex items-center justify-between p-4">
-                    <h1 className="text-xl font-bold text-secondary">Dashboard</h1>
+                    <h1 className="text-xl font-bold text-secondary">{sectionsComponentsMap[activeSection].title}</h1>
                     <div className="right flex gap-4">
                         <Bell className="text-gray-500" cursor={"pointer"} />
                         <ThemeToggle />
                     </div>
                 </div>
                 <div className="container-content w-full h-full bg-white rounded-t-2xl p-4">
-                    {activeSection == 0 && <Dashboard />}
+                    {sectionsComponentsMap[activeSection].component}
                 </div>
             </div>
         </div>

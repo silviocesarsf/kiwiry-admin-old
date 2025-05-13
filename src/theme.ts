@@ -1,4 +1,4 @@
-import { createTheme, MantineTheme } from "@mantine/core";
+import { createTheme, MantineTheme, MultiSelect } from "@mantine/core";
 
 const greenPalette = [
     '#e6f4ea',
@@ -22,8 +22,8 @@ export const theme = createTheme({
     components: {
         Button: {
             defaultProps: {
-                size: 'lg',
-                radius: 'lg'
+                size: 'md',
+                radius: 'sm'
             }
         },
         Input: {
@@ -40,6 +40,68 @@ export const theme = createTheme({
                 size: 'md',
                 radius: 'md'
             },
+        },
+        Select: {
+            styles: (theme: MantineTheme) => ({
+                input: {
+                    backgroundColor: theme.white,
+                    color: theme.colors.gray[10],
+                    '&:focus': {
+                        borderColor: theme.colors.green[7],
+                    },
+                }
+            }),
+            defaultProps: {
+                size: 'md',
+                radius: 'md'
+            },
+        },
+        MultiSelect: {
+            styles: (theme: MantineTheme) => ({
+                input: {
+                    backgroundColor: theme.white,
+                    color: theme.colors.gray[10],
+                    '&:focus': {
+                        borderColor: theme.colors.green[7],
+                    },
+                }
+            }),
+            defaultProps: {
+                size: 'md',
+                radius: 'md'
+            },
+        },
+        Textarea: {
+            styles: (theme: MantineTheme) => ({
+                input: {
+                    backgroundColor: theme.white,
+                    color: theme.colors.gray[10],
+                    '&:focus': {
+                        borderColor: theme.colors.green[7],
+                    },
+                }
+            }),
+            defaultProps: {
+                size: 'md',
+                radius: 'md'
+            },
+        },
+        Modal: {
+            defaultProps: {
+                size: 'xl',
+                overlayProps: {
+                    backgroundOpacity: 0.55,
+                    blur: 3,
+                }
+            },
+            styles: (theme: MantineTheme) => ({
+                header: {
+                    marginBottom: theme.spacing.md,
+                    paddingTop: theme.spacing.sm,
+                    paddingBottom: theme.spacing.sm,
+                    color: theme.colors.gray[6]
+                },
+            }),
         }
     },
 })

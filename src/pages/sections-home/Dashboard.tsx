@@ -69,30 +69,14 @@ export default function Dashboard() {
                 </nav>
             </div>
             <div className="grid-container grid gap-4 grid-cols-3 h-full">
-                <div className="card">
+                <div className="sell card col-span-2">
                     <div className="title">
                         <div className="left">
-                            <Activity />
-                            <h1>Teste Titulo</h1>
+                            <HandCoins />
+                            <h1>Vendas</h1>
                         </div>
                         <div className="right">
-                            <Tooltip label="Teste">
-                                <Info />
-                            </Tooltip>
-                        </div>
-                    </div>
-                    <div className="content">
-
-                    </div>
-                </div>
-                <div className="card">
-                    <div className="title">
-                        <div className="left">
-                            <Activity />
-                            <h1>Teste Titulo</h1>
-                        </div>
-                        <div className="right">
-                            <Tooltip label="Teste">
+                            <Tooltip label="Veja o horário que sua empresa mais vende.">
                                 <Info />
                             </Tooltip>
                         </div>
@@ -115,7 +99,6 @@ export default function Dashboard() {
                     </div>
                     <div className="content p-0!">
                         <Table striped highlightOnHover verticalSpacing={"lg"} className="text-gray-500 w-full">
-
                             <Table.Tbody>
                                 {recentsOrders.map((order) => (
                                     <Table.Tr key={order.id}>
@@ -130,20 +113,36 @@ export default function Dashboard() {
                         </Table>
                     </div>
                 </div>
-                <div className="card col-span-2">
+                <div className="card">
                     <div className="title">
                         <div className="left">
-                            <HandCoins />
-                            <h1>Vendas</h1>
+                            <Activity />
+                            <h1>Teste Titulo</h1>
                         </div>
                         <div className="right">
-                            <Tooltip label="Veja o horário que sua empresa mais vende.">
+                            <Tooltip label="Teste">
                                 <Info />
                             </Tooltip>
                         </div>
                     </div>
                     <div className="content">
-                        
+
+                    </div>
+                </div>
+                <div className="card">
+                    <div className="title">
+                        <div className="left">
+                            <Activity />
+                            <h1>Teste Titulo</h1>
+                        </div>
+                        <div className="right">
+                            <Tooltip label="Teste">
+                                <Info />
+                            </Tooltip>
+                        </div>
+                    </div>
+                    <div className="content">
+
                     </div>
                 </div>
             </div>

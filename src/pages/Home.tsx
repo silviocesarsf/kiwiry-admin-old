@@ -22,8 +22,8 @@ import Products from "./sections-home/Products"
 
 export default function Home() {
     const searchInputRef = useRef<HTMLInputElement>(null)
-    const [activeSection, setActiveSection] = useState(0)
-    const [expandedMenus, setExpandedMenus] = useState<number[]>([0])
+    const [activeSection, setActiveSection] = useState(1)
+    const [expandedMenus, setExpandedMenus] = useState<number[]>([1])
 
     window.addEventListener("keyup", (e) => {
         if (e.key == "k") {

@@ -1,15 +1,56 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Enterprise {
+  enterprise_id Int        @id @default(autoincrement())
+  name          String
+  cnpj          String? 
+  created_at    DateTime   @default(now())
+  modified_at   DateTime?
+
+  users         User[]
+  plans         EnterprisePlan[]
+}
+
+model User {
+  user_id                  Int       @id @default(autoincrement())
+  enterprise_id            Int
+  email                    String    @unique
+  name                     String
+  verified                 Boolean   @default(false)
+  created_at               DateTime  @default(now())
+  updated_at               DateTime?
+  password_hash            String?
+  email_verification_token String?
+
+  enterprise               Enterprise @relation(fields: [enterprise_id], references: [enterprise_id])
+}
+
+model Plan {
+  plan_id     Int               @id @default(autoincrement())
+  name        String
+  price       Decimal           @db.Decimal(10, 2)
+  is_active   Boolean           @default(true)
+  created_at  DateTime          @default(now())
+  modified_at DateTime?
+
+  enterprises EnterprisePlan[]
+}
+
+model EnterprisePlan {
+  enterprise_plan_id Int        @id @default(autoincrement())
+  enterprise_id       Int
+  plan_id             Int
+  started_at          DateTime
+  expires_at          DateTime?
+  is_trial            Boolean   @default(true)
+
+  enterprise          Enterprise @relation(fields: [enterprise_id], references: [enterprise_id])
+  plan                Plan       @relation(fields: [plan_id], references: [plan_id])
 }

@@ -23,7 +23,7 @@ export const theme = createTheme({
         Button: {
             defaultProps: {
                 size: 'md',
-                radius: 'sm'
+                radius: 'lg'
             }
         },
         Input: {

@@ -1,5 +1,5 @@
 import { Request, Router } from "express";
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 import bcrypyt from "bcrypt";
 import jwt from "jsonwebtoken"
 
@@ -53,7 +53,7 @@ router.post("/", async (req: Request<{}, {}, LoginBody>, res) => {
         { expiresIn: "1d" }
     );
 
-    res.status(200).json({ token });
+    res.status(200).json({ message: token });
 });
 
 export default router;

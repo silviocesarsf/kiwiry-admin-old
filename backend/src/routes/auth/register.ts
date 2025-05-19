@@ -1,6 +1,9 @@
 import { Request, Router } from "express";
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
+import { sendVerificationToken } from "../../services/email-service";
+import { Prisma } from "@prisma/client";
 
 const router = Router();
 interface RegisterBody {
@@ -30,13 +33,14 @@ router.post("/", async (req: Request<{}, {}, RegisterBody>, res) => {
 
     if (enterpriseAlreadyExists) {
         res.status(400).json({
-            error: "Nome da empresa já existe"
+            error: "Empresa já cadastrada."
         });
 
         return;
     }
 
     try {
+        const emailToken = crypto.randomBytes(3).toString("hex").slice(0, 5);
         await prisma.enterprise.create({
             data: {
                 name: enterprise_name,
@@ -45,18 +49,31 @@ router.post("/", async (req: Request<{}, {}, RegisterBody>, res) => {
                     create: {
                         name: owner_name,
                         email,
-                        password_hash:  await bcrypt.hash(password, 10),
+                        password_hash: await bcrypt.hash(password, 10),
+                        email_verification_token: emailToken,
                         verified: false
                     }
                 }
             }
         });
 
+        await sendVerificationToken("", emailToken);
         res.status(201).json({
             message: "Usuário criado com sucesso."
         });
     } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2002") {
+                res.status(409).json({
+                    error: "E-mail já cadastrado.",
+                });
+                
+                return;
+            }
+        }
+
         console.error(error);
+        res.status(500).json({ error: "Erro interno do servidor." });
     }
 });
 

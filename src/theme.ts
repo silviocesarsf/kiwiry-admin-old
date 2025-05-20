@@ -1,20 +1,20 @@
 import { createTheme, MantineTheme, MultiSelect } from "@mantine/core";
 
 const greenPalette = [
-    '#e6f4ea',
-    '#c7e8ca',
-    '#a8d8aa',
-    '#89c78a',
-    '#6ab66a',
-    '#4ba54a',
-    '#8CB936',
-    '#1d832a',
-    '#1a7225',
-    '#166120'
+  "#eef6e5", // 0 - muito claro
+  "#d3e8b8", // 1
+  "#b8da8b", // 2
+  "#9dcc5e", // 3
+  "#82be31", // 4
+  "#5A900E", // 5 - base
+  "#4e800c", // 6
+  "#426f0a", // 7
+  "#365f08", // 8
+  "#2a4f06", // 9 - muito escuro
 ] as const;
 
 export const theme = createTheme({
-    fontFamily: 'Montserrat, sans-serif',
+    fontFamily: 'Inter, sans-serif',
     primaryColor: 'green',
     colors: {
         green: greenPalette
@@ -23,7 +23,7 @@ export const theme = createTheme({
         Button: {
             defaultProps: {
                 size: 'md',
-                radius: 'lg'
+                radius: 'md'
             }
         },
         Input: {

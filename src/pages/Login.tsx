@@ -1,37 +1,81 @@
-import { Anchor, Button, Checkbox, Input } from "@mantine/core";
-import { Mail, LockIcon, LogIn } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import Hero from "../assets/background_hero.png";
+import { Button, Checkbox, Input, Loader } from "@mantine/core";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Axios from "../lib/axios";
+import { useState } from "react";
 
+const schema = z.object({
+    email: z.string().email("Email inválido"),
+    password: z.string().min(6, "No mínimo 6 caracteres")
+});
+
+type FormData = z.infer<typeof schema>;
 export default function Login() {
-    const navigation = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<FormData>({
+        resolver: zodResolver(schema)
+    });
+
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+    const onSubmit = async (data: FormData) => {
+        setIsLoading(true);
+        const response = await Axios.post("/login", data, { withCredentials: true });
+        setIsLoading(false);
+        if (response.status == 200) {
+            navigate("/");
+        }
+    }
+
     return (
-        <div className="h-screen w-full flex items-center justify-center">
-            <div className="flex items-center justify-between w-full h-full">
-                <div className="left h-full w-[40%] py-4 px-8 flex flex-col items-center justify-center gap-12">
-                    <div className="w-full items-start justify-center flex flex-col">
-                        <h1 className="text-7xl font-bold bg-gradient-to-br from-green-300 via-green-500 to-green-400 bg-clip-text text-transparent">Olá,</h1>
-                        <p className="text-4xl font-medium bg-gradient-to-br from-green-300 via-green-500 to-green-400 bg-clip-text text-transparent">Bem vindo de volta!</p>
-                    </div>
-                    <div className="w-full flex flex-col gap-4">
-                        <Input placeholder="Insira seu E-mail" type="email" leftSection={<Mail size={"1.4rem"} />} />
-                        <Input placeholder="Insira sua senha" type="password" leftSection={<LockIcon size={"1.4rem"} />} />
-                        <div className="flex w-full items-center justify-between">
-                            <Checkbox label="Lembrar de mim" />
-                            <Anchor target="_blank" underline="always">
-                                Esqueci minha senha
-                            </Anchor>
-                        </div>
-                        <div className="flex flex-col items-center justify-center w-full gap-4 mt-4">
-                            <Button fullWidth leftSection={<LogIn size={"1.4rem"} />}>Entrar</Button>
-                            <Button onClick={() => navigation("/register")} variant="outline" fullWidth>Registrar-se</Button>
-                        </div>
-                    </div>
+        <div className="w-full h-screen flex items-center justify-between">
+            <div className="left text-white bg-primary h-full flex-[.5] p-6 flex flex-col items-start justify-between relative">
+                <div className="w-full">
+                    <h1 className="text-3xl font-bold">kiwire</h1>
                 </div>
-                <div className="right h-full w-full flex items-center justify-center shadow-xl">
-                    <div className="photo w-full h-full overflow-hidden rounded-l-2xl">
-                        <img className="w-full h-full object-cover" src={Hero} />
+                <div className="w-full space-y-4 mb-12">
+                    <h1 className="text-5xl font-bold">Bem vindo de volta!</h1>
+                    <p className="text-2xl font-light text-gray-200">Acesse sua conta para gerenciar suas entregas com eficiência e praticidade.</p>
+                </div>
+                <div className="w-full">
+                    <h1 className="text-md opacity-40">© {new Date().getFullYear()} Kiwire Delivery, Todos os direitos reservados.</h1>
+                </div>
+                <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-20 left-10 w-60 h-60 rounded-full border-8 border-white"></div>
+                    <div className="absolute bottom-40 right-40 w-40 h-40 rounded-full border-4 border-white"></div>
+                    <div className="absolute top-60 right-20 w-20 h-20 rounded-full border-2 border-white"></div>
+                    <div className="absolute bottom-20 left-20 w-80 h-80 rounded-full border-4 border-white"></div>
+                </div>
+            </div>
+            <div className="right h-full flex-1 bg-white p-12 flex items-center justify-center">
+                <div className="w-[80%] flex flex-col gap-12 h-full justify-center items-center">
+                    <div className="space-y-2 w-full text-start">
+                        <h1 className="text-3xl text-primary font-bold">Entrar no kiwire</h1>
+                        <p className="text-amber-900 text-lg">Digite suas credenciais para acessar sua conta</p>
                     </div>
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full gap-4 items-center justify-center">
+                        <Input.Wrapper label="Email" withAsterisk className="w-full" error={errors.email?.message}>
+                            <Input {...register("email")} error={errors.email?.message} className="w-full" type="email" placeholder="email@email.com" />
+                        </Input.Wrapper>
+                        <Input.Wrapper label="Senha" withAsterisk className="w-full" error={errors.password?.message} >
+                            <Input {...register("password")} error={errors.password?.message} className="w-full" type="password" placeholder="Sua senha" />
+                        </Input.Wrapper>
+                        <div className="w-full flex items-center justify-between">
+                            <Checkbox label="Lembrar de mim" />
+                            <Link className="text-primary" to={"/forget-password"}>Esqueceu a senha?</Link>
+                        </div>
+                        <div className="space-y-2 w-full mt-4">
+                            <Button fullWidth size="lg" type="submit">{isLoading ? <Loader size={"sm"} color="#fff" /> : "Entrar"}</Button>
+                            <div className="w-full text-center">
+                                <span>Ainda não tem uma conta ? <Link className="text-primary" to={"/register"}>Cadastre-se</Link></span>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

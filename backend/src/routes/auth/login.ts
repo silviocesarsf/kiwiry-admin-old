@@ -53,7 +53,15 @@ router.post("/", async (req: Request<{}, {}, LoginBody>, res) => {
         { expiresIn: "1d" }
     );
 
-    res.status(200).json({ message: token });
+    res
+    .status(200)
+    .cookie("token", token, {
+        httpOnly: true,
+        // secure: true - Somente HTTPS
+        sameSite: 'strict',
+        maxAge: 1000 * 60 * 60 * 24 
+    })
+    .json({ message: "Login realizado com sucesso" });
 });
 
 export default router;

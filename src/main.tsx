@@ -1,8 +1,7 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './input.css';
 import './index.css';
-import { BrowserRouter, createBrowserRouter, Route, RouterProvider, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import { MantineProvider, localStorageColorSchemeManager } from '@mantine/core';
@@ -12,6 +11,7 @@ import Login from './pages/Login';
 import VerifyEmail from "./pages/VerifyEmail"
 import { theme as baseTheme } from './theme';
 import ProtectedRoute from './components/ProtectedRoute';
+import ForgotPassword from './pages/ForgotPassword';
 
 const colorSchemeManager = localStorageColorSchemeManager({ key: 'kiwire-color-scheme' });
 createRoot(document.getElementById('root')!).render(
@@ -31,6 +31,7 @@ createRoot(document.getElementById('root')!).render(
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/verify-email' element={<VerifyEmail />} />
+                    <Route path='/forgot-password' element={<ForgotPassword />} />
                 </Routes>
             </BrowserRouter>
         </MantineProvider>

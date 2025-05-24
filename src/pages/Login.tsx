@@ -6,11 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Axios from "../lib/axios";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast"
-import { AxiosError } from "axios";
 
 const schema = z.object({
     email: z.string().email("Email inválido"),
-    password: z.string().min(6, "No mínimo 6 caracteres")
+    password: z.string().min(6, "No mínimo 6 caracteres"),
+    rememberMe: z.boolean().optional()
 });
 
 type FormData = z.infer<typeof schema>;
@@ -83,8 +83,8 @@ export default function Login() {
                             <Input {...register("password")} error={errors.password?.message} className="w-full" type="password" placeholder="Sua senha" />
                         </Input.Wrapper>
                         <div className="w-full flex items-center justify-between">
-                            <Checkbox label="Lembrar de mim" />
-                            <Link className="text-primary" to={"/forget-password"}>Esqueceu a senha?</Link>
+                            <Checkbox {...register("rememberMe")} label="Lembrar de mim" />
+                            <Link className="text-primary" to={"/forgot-password"}>Esqueceu a senha?</Link>
                         </div>
                         <div className="space-y-2 w-full mt-4">
                             <Button fullWidth size="lg" type="submit">{isLoading ? <Loader size={"sm"} color="#fff" /> : "Entrar"}</Button>

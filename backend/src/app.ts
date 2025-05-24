@@ -6,6 +6,8 @@ import meRoute from "./routes/me"
 import logoutRoute from "./routes/auth/logoutRoute"
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import forgotPasswordRoute from "./routes/auth/forgotPasswordRoute";
+import resetPasswordRoute from "./routes/auth/resetPasswordRoute"
 
 const app = express();
 app.use(cors({
@@ -20,5 +22,7 @@ app.use("/api/login", loginRoute);
 app.use("/api/verify-email", verifyEmailRoute);
 app.use("/api/me", meRoute);
 app.use("/api/logout", logoutRoute);
+app.use("/api/forgot-password", forgotPasswordRoute);
+app.use("/api/reset-password", resetPasswordRoute);
 
 export default app;

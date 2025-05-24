@@ -1,56 +1,65 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model Enterprise {
-  enterprise_id Int        @id @default(autoincrement())
-  name          String
-  cnpj          String? 
-  created_at    DateTime   @default(now())
-  modified_at   DateTime?
+    enterprise_id Int       @id @default(autoincrement())
+    name          String
+    cnpj          String?
+    created_at    DateTime  @default(now())
+    modified_at   DateTime?
 
-  users         User[]
-  plans         EnterprisePlan[]
+    users User[]
+    plans EnterprisePlan[]
 }
 
 model User {
-  user_id                  Int       @id @default(autoincrement())
-  enterprise_id            Int
-  email                    String    @unique
-  name                     String
-  verified                 Boolean   @default(false)
-  created_at               DateTime  @default(now())
-  updated_at               DateTime?
-  password_hash            String?
-  email_verification_token String?
+    user_id                  Int       @id @default(autoincrement())
+    enterprise_id            Int
+    email                    String    @unique
+    name                     String
+    verified                 Boolean   @default(false)
+    created_at               DateTime  @default(now())
+    updated_at               DateTime?
+    password_hash            String?
+    email_verification_token String?
 
-  enterprise               Enterprise @relation(fields: [enterprise_id], references: [enterprise_id])
+    enterprise         Enterprise           @relation(fields: [enterprise_id], references: [enterprise_id])
+    PasswordResetToken PasswordResetToken[]
 }
 
 model Plan {
-  plan_id     Int               @id @default(autoincrement())
-  name        String
-  price       Decimal           @db.Decimal(10, 2)
-  is_active   Boolean           @default(true)
-  created_at  DateTime          @default(now())
-  modified_at DateTime?
+    plan_id     Int       @id @default(autoincrement())
+    name        String
+    price       Decimal   @db.Decimal(10, 2)
+    is_active   Boolean   @default(true)
+    created_at  DateTime  @default(now())
+    modified_at DateTime?
 
-  enterprises EnterprisePlan[]
+    enterprises EnterprisePlan[]
 }
 
 model EnterprisePlan {
-  enterprise_plan_id Int        @id @default(autoincrement())
-  enterprise_id       Int
-  plan_id             Int
-  started_at          DateTime
-  expires_at          DateTime?
-  is_trial            Boolean   @default(true)
+    enterprise_plan_id Int       @id @default(autoincrement())
+    enterprise_id      Int
+    plan_id            Int
+    started_at         DateTime
+    expires_at         DateTime?
+    is_trial           Boolean   @default(true)
 
-  enterprise          Enterprise @relation(fields: [enterprise_id], references: [enterprise_id])
-  plan                Plan       @relation(fields: [plan_id], references: [plan_id])
+    enterprise Enterprise @relation(fields: [enterprise_id], references: [enterprise_id])
+    plan       Plan       @relation(fields: [plan_id], references: [plan_id])
+}
+
+model PasswordResetToken {
+    token      String   @id
+    user       User     @relation(fields: [user_id], references: [user_id])
+    user_id    Int
+    expires_at DateTime
+    created_at DateTime @default(now())
 }

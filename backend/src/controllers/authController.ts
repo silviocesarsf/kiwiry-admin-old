@@ -8,7 +8,7 @@ import { Prisma } from "@prisma/client";
 import { LoginBody, RegisterBody } from "../types/authType";
 
 export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
     if (!email || !password) {
         res.status(400).json({
             message: "Campos insuficientes"
@@ -25,7 +25,7 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
 
     if (!user?.user_id || false) {
         res.status(404).json({
-            error: "Usuário inexistente"
+            error: "Usuário não encontrado"
         });
 
         return;
@@ -54,14 +54,14 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
             enterprise_id: user.enterprise_id
         },
         process.env.JWT_SECRET || "",
-        { expiresIn: "1d" }
+        { expiresIn: rememberMe ? "7d" : "1d" }
     );
 
     res.status(200).cookie("token", token, {
         httpOnly: true,
         // secure: true - Somente HTTPS
         sameSite: 'strict',
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: rememberMe ? (1000 * 60 * 60 * 24 * 7) : (1000 * 60 * 60 * 24),
     }).json({ message: "Login realizado com sucesso", token: token });
 }
 

@@ -1,8 +1,11 @@
 import express from "express"
-import registerRoute from "./routes/auth/register"
-import loginRoute from "./routes/auth/login"
-import verifyEmailRoute from "./routes/auth/verify-email";
+import registerRoute from "./routes/auth/registerRoute"
+import loginRoute from "./routes/auth/loginRoute"
+import verifyEmailRoute from "./routes/auth/verifyEmailRoute";
+import meRoute from "./routes/me"
+import logoutRoute from "./routes/auth/logoutRoute"
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(cors({
@@ -11,8 +14,11 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/register", registerRoute);
 app.use("/api/login", loginRoute);
 app.use("/api/verify-email", verifyEmailRoute);
+app.use("/api/me", meRoute);
+app.use("/api/logout", logoutRoute);
 
 export default app;

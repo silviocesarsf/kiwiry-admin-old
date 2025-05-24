@@ -1,6 +1,6 @@
 import { Request, Router } from "express";
 import { prisma } from "../../lib/prisma";
-
+import jwt from "jsonwebtoken";
 const router = Router();
 
 interface VerifyEmailBody {
@@ -10,8 +10,8 @@ interface VerifyEmailBody {
 router.post("/", async (req: Request<{}, {}, VerifyEmailBody>, res) => {
     const { token } = req.body;
 
-    if (!token || token.length != 5) {
-        res.status(400).json({ message: "Token inválido" });
+    if (!token) {
+        res.status(400).json({ error: "Token inválido" });
         return;
     }
 
@@ -21,9 +21,10 @@ router.post("/", async (req: Request<{}, {}, VerifyEmailBody>, res) => {
         });
 
         if (!user) {
-            res.status(404).json({ message: "Token não encontrado" });
+            res.status(404).json({ error: "Token não encontrado" });
             return;
         }
+
 
         await prisma.user.update({
             where: { user_id: user.user_id },
@@ -33,10 +34,25 @@ router.post("/", async (req: Request<{}, {}, VerifyEmailBody>, res) => {
             }
         });
 
-        res.status(200).json({ message: "Usuário validado com sucesso." });
+        const jwtToken = jwt.sign(
+            {
+                user_id: user.user_id,
+                email: user.email,
+                enterprise_id: user.enterprise_id
+            },
+            process.env.JWT_SECRET || "",
+            { expiresIn: "1d" }
+        );
+
+        res.status(200).cookie("token", jwtToken, {
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60 * 24
+        }).json({ message: "Email verificado com sucesso" });
+
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Erro interno do servidor" });
+        res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
 

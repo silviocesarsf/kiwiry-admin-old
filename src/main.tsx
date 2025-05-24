@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './input.css';
 import './index.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter, createBrowserRouter, Route, RouterProvider, Routes } from 'react-router-dom';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import { MantineProvider, localStorageColorSchemeManager } from '@mantine/core';
@@ -11,23 +11,28 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import VerifyEmail from "./pages/VerifyEmail"
 import { theme as baseTheme } from './theme';
-
-const router = createBrowserRouter([
-    { path: '/', element: <Home /> },
-    { path: '/login', element: <Login /> },
-    { path: '/register', element: <Register /> },
-    { path: '/verify-email', element: <VerifyEmail />}
-]);
+import ProtectedRoute from './components/ProtectedRoute';
 
 const colorSchemeManager = localStorageColorSchemeManager({ key: 'kiwire-color-scheme' });
 createRoot(document.getElementById('root')!).render(
     <>
-       <MantineProvider
+        <MantineProvider
             theme={baseTheme}
             colorSchemeManager={colorSchemeManager}
             defaultColorScheme="light"
         >
-            <RouterProvider router={router} />
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/' element={
+                        <ProtectedRoute>
+                            <Home />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/register' element={<Register />} />
+                    <Route path='/verify-email' element={<VerifyEmail />} />
+                </Routes>
+            </BrowserRouter>
         </MantineProvider>
     </>
 );

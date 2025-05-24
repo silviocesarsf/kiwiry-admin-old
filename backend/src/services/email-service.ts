@@ -5,7 +5,7 @@ export async function sendVerificationToken(to?: string, token?: string) {
     await resend.emails.send({
         from: 'onboarding@resend.dev',
         to: 'silvio14dmc@gmail.com',
-        subject: 'Teste de envio',
+        subject: 'Acesse sua conta no Kiwire 🚀',
         html: `<a href='${link}'>Clique aqui para confirmar o token</a>`
     })
 }

@@ -1,0 +1,1 @@
+export const sanitizeCNPJ = (value: string) => value.replace(/[^\d]+/g, '');

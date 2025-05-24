@@ -8,3 +8,4 @@ export function formatCurrency(value: string, prefix = 'R$'): string {
 
     return `${prefix} ${formatted}`;
 }
+

@@ -4,7 +4,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Axios from "../lib/axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast, Toaster } from "react-hot-toast"
+import { AxiosError } from "axios";
 
 const schema = z.object({
     email: z.string().email("Email inválido"),
@@ -25,15 +27,30 @@ export default function Login() {
     const navigate = useNavigate();
     const onSubmit = async (data: FormData) => {
         setIsLoading(true);
-        const response = await Axios.post("/login", data, { withCredentials: true });
-        setIsLoading(false);
-        if (response.status == 200) {
-            navigate("/");
-        }
-    }
+        Axios.post("/login", data, { withCredentials: true })
+            .then(res => {
+                if (res.status == 200) {
+                    toast.success("Logado com sucesso");
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 1000);
+                }
+            })
+            .catch((err) => {
+                toast.error(err.response.data?.error || "Erro interno");
+            })
+            .finally(() => setIsLoading(false));
+    };
 
+    useEffect(() => {
+        Axios.post("/logout", {}, { withCredentials: true })
+    }, []);
     return (
         <div className="w-full h-screen flex items-center justify-between">
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
             <div className="left text-white bg-primary h-full flex-[.5] p-6 flex flex-col items-start justify-between relative">
                 <div className="w-full">
                     <h1 className="text-3xl font-bold">kiwire</h1>

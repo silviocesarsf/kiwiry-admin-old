@@ -1,9 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Checkbox, Input, Loader } from "@mantine/core";
+import { Button, Input, Loader } from "@mantine/core";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
+import Axios from "../lib/axios";
+import { sanitizeCNPJ } from "../utils/Sanitizers"
+import CNPJInput from "../components/CNPJInput";
+import toast, { Toaster } from "react-hot-toast";
+import { AxiosError } from "axios";
 
+const cnpjRegex = /^\d{14}$/;
 const schema = z.object({
     email: z.string().email("Email inválido"),
     password: z.string().min(6, "No mínimo 6 caracteres"),
@@ -11,9 +18,11 @@ const schema = z.object({
     enterpriseName: z.string().min(5, "No mínimo 5 caracteres"),
     cnpj: z
         .string()
-        .min(14, "No mínimo 14 caracteres")
         .optional()
-        .or(z.literal(""))
+        .transform((val) => val ? val.replace(/[^\d]/g, "") : "")
+        .refine((val) => !val || cnpjRegex.test(val), {
+            message: "CNPJ inválido (precisa de 14 números)"
+        })
 });
 
 type FormData = z.infer<typeof schema>;
@@ -21,17 +30,47 @@ export default function Register() {
     const {
         register,
         handleSubmit,
-        formState: { errors, isLoading }
+        formState: { errors }
     } = useForm<FormData>({
         resolver: zodResolver(schema)
     });
 
-    const onSubmit = (data: FormData) => {
-        
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const onSubmit = async (data: FormData) => {
+        setIsLoading(true);
+        Axios.post("/register", {
+            email: data.email,
+            password: data.password,
+            owner_name: data.ownerName,
+            cnpj: sanitizeCNPJ(data.cnpj || ""),
+            enterprise_name: data.enterpriseName
+        })
+            .then((res) => {
+                if (res.status == 201) {
+                    toast.success("Registrado com sucesso");
+                    localStorage.setItem("emailToVerify", data.email);
+                    setTimeout(() => {
+                        navigate("/verify-email");
+                    }, 1000);
+                }
+            })
+            .catch((err) => {
+                toast.error(err.response.data?.error || "Erro interno");
+            })
+            .finally(() => setIsLoading(false));
     }
+
+    useEffect(() => {
+        Axios.post("/logout", {}, { withCredentials: true })
+    }, []);
 
     return (
         <div className="w-full h-screen flex items-center justify-between">
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
             <div className="left text-white bg-primary h-full flex-[.5] p-6 flex flex-col items-start justify-between relative">
                 <div className="w-full">
                     <h1 className="text-3xl font-bold">kiwire</h1>
@@ -69,9 +108,9 @@ export default function Register() {
                         <Input.Wrapper label="Nome da Empresa" withAsterisk className="w-full" error={errors.enterpriseName?.message}>
                             <Input {...register("enterpriseName")} error={errors.enterpriseName?.message} className="w-full" type="text" placeholder="Nome do seu estabelecimento" />
                         </Input.Wrapper>
-                        <Input.Wrapper label="CNPJ" className="w-full" error={errors.cnpj?.message}>
-                            <Input {...register("cnpj")} error={errors.cnpj?.message} className="w-full" type="text" placeholder="00.000.000/0000-00" />
-                        </Input.Wrapper>
+                        {/* <Input.Wrapper label="CNPJ" className="w-full" error={errors.cnpj?.message}> */}
+                        <CNPJInput />
+                        {/* </Input.Wrapper> */}
                         <div className="space-y-2 w-full mt-4">
                             <Button fullWidth size="lg" type="submit">{isLoading ? <Loader size={"sm"} color="#fff" /> : "Criar Conta"}</Button>
                             <div className="w-full text-center">

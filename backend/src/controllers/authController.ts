@@ -33,7 +33,7 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
 
     if (!user.verified || false) {
         res.status(400).json({
-            error: "Email não verificado"
+            error: "Email não verificado, verifique seu email"
         });
         return;
     }

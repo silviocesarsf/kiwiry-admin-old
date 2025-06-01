@@ -51,7 +51,7 @@ export default function Register() {
                     toast.success("Registrado com sucesso");
                     localStorage.setItem("emailToVerify", data.email);
                     setTimeout(() => {
-                        navigate("/verify-email");
+                        navigate("/onboarding");
                     }, 1000);
                 }
             })

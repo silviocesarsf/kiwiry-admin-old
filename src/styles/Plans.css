@@ -1,0 +1,60 @@
+.plan-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; 
+    gap: 1.6rem; 
+    border: 2px solid var(--color-gray-200);
+    height: 100%;
+    min-width: 330px;
+    padding: 30px;
+    max-width: 330px;
+    border-radius: 10px;
+    background-color: #c2eaa742;
+    transition: .4s;
+    cursor: pointer;
+}
+
+.plan-card .top {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; 
+}
+
+.plan-card .top h1 {
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: var(--text-2xl); 
+}
+
+.plan-card ul {
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.plan-card ul li {
+    margin: 7px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px; 
+    color: var(--color-gray-800);
+    font-size: 1.1em;
+}
+
+.plan-card ul li svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.plan-card.selected {
+    border: 2px solid var(--color-primary);
+    background-color: #bdf4703b;
+}
+
+.plan-card:hover {
+    background-color: #bdf4703b;
+}

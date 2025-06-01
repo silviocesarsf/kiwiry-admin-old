@@ -25,7 +25,6 @@ router.post("/", async (req: Request<{}, {}, VerifyEmailBody>, res) => {
             return;
         }
 
-
         await prisma.user.update({
             where: { user_id: user.user_id },
             data: {
@@ -34,22 +33,7 @@ router.post("/", async (req: Request<{}, {}, VerifyEmailBody>, res) => {
             }
         });
 
-        const jwtToken = jwt.sign(
-            {
-                user_id: user.user_id,
-                email: user.email,
-                enterprise_id: user.enterprise_id
-            },
-            process.env.JWT_SECRET || "",
-            { expiresIn: "1d" }
-        );
-
-        res.status(200).cookie("token", jwtToken, {
-            httpOnly: true,
-            sameSite: "strict",
-            maxAge: 1000 * 60 * 60 * 24
-        }).json({ message: "Email verificado com sucesso" });
-
+        res.status(200).json({ message: "Email verificado com sucesso" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Erro interno do servidor" });

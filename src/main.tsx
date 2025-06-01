@@ -8,10 +8,10 @@ import { MantineProvider, localStorageColorSchemeManager } from '@mantine/core';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import VerifyEmail from "./pages/VerifyEmail"
 import { theme as baseTheme } from './theme';
 import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/ForgotPassword';
+import Onboarding from './pages/Onboarding';
 
 const colorSchemeManager = localStorageColorSchemeManager({ key: 'kiwire-color-scheme' });
 createRoot(document.getElementById('root')!).render(
@@ -30,8 +30,8 @@ createRoot(document.getElementById('root')!).render(
                     } />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
-                    <Route path='/verify-email' element={<VerifyEmail />} />
                     <Route path='/forgot-password' element={<ForgotPassword />} />
+                    <Route path='/onboarding' element={<Onboarding />} />
                 </Routes>
             </BrowserRouter>
         </MantineProvider>

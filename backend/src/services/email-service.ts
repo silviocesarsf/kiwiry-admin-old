@@ -1,7 +1,7 @@
 import { resend } from "../lib/resend";
 
 export async function sendVerificationToken(to?: string, token?: string) {
-    const link = `${process.env.APP_URL}/verify-email?token=${token}`;
+    const link = `${process.env.APP_URL}/onboarding?token=${token}`;
     await resend.emails.send({
         from: 'onboarding@resend.dev',
         to: 'silvio14dmc@gmail.com',

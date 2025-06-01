@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
     }
 
     const token = crypto.randomBytes(4).toString("hex");
-    const expires = new Date(Date.now() + 1000 * 60 * 60 * 15);
+    const expires = new Date(Date.now() + 1000 * 60 * 15);
 
     await prisma.passwordResetToken.create({
         data: {

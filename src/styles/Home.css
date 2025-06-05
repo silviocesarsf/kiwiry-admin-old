@@ -1,37 +1,25 @@
-.sidebar nav {
+.sidebar li {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
     width: 100%;
-    gap: 30px;
-
-    &>div {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 4px;
-        width: 100%;
-        color: var(--color-gray-500);
-    }
-
-    &>.active, &>div>div>.active  {
-        background-color: var(--color-gray-100);
-        color: var(--color-primary);
-        font-weight: 500;
-    }
+    font-size: 1.2em;
+    cursor: pointer;
+    color: var(--color-gray-500);
+    transition: .5s;
+    padding: 10px 15px;
+    border-radius: 5px;
 }
 
+.sidebar li.selected {
+    color: white;
+    font-weight: 500;
+    background-color: var(--color-primary);
+    opacity: 60%;
+}
 
-@keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-.sidebar nav > div > div:last-child {
-    animation: slideDown 0.2s ease-out;
+.sidebar li:hover {
+    background-color: var(--color-primary);
+    color: white;
 }

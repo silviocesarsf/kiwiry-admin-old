@@ -8,9 +8,9 @@ export default function ProtectedRoute({ children }: { children: JSX.Element }) 
         return <h1>Carregando...</h1>
     }
 
-    if (!user) {
-        return <Navigate to={"/login"} replace />
-    }
+    // if (!user) {
+    //     return <Navigate to={"/login"} replace />
+    // }
 
     return children;
 }

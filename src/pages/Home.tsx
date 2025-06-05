@@ -1,209 +1,88 @@
-import {
-    ArrowLeftRight,
-    Bell,
-    BarChartIcon as ChartNoAxesColumnIncreasing,
-    ChevronDown,
-    ChevronRight,
-    EllipsisVertical,
-    File,
-    LogOut,
-    MenuIcon,
-    Package,
-    PanelLeft,
-    SearchIcon,
-    Settings,
-} from "lucide-react"
-import { Input, Kbd, Menu } from "@mantine/core"
+import { MdDashboard, MdOutlineRestaurantMenu } from "react-icons/md"
 import "../styles/Home.css"
-import { useRef, useState } from "react"
+import { FaBox, FaUserFriends } from "react-icons/fa"
+import { BoxIcon } from "lucide-react"
+import { BsBellFill } from "react-icons/bs"
 import Dashboard from "./sections-home/Dashboard"
-import ThemeToggle from "../components/ThemeToggle"
-import Products from "./sections-home/Products"
+import { useState } from "react"
+import { Input } from "@mantine/core"
+import { formatDateForInput, getFirstLastDayOfMonth } from "../utils/Date"
 
+const sectionsMap = [
+    {
+        name: "Dashboard",
+        description: "Visão geral do seu negócio",
+        component: <Dashboard />
+    },
+    {
+        name: "Produtos",
+        component: null
+    },
+    {
+        name: "Catálogos",
+        component: null
+    },
+    {
+        name: "Usuários",
+        component: null
+    }
+]
 export default function Home() {
-    const searchInputRef = useRef<HTMLInputElement>(null)
-    const [activeSection, setActiveSection] = useState(1)
-    const [expandedMenus, setExpandedMenus] = useState<number[]>([1])
-
-    window.addEventListener("keyup", (e) => {
-        if (e.key == "k") {
-            searchInputRef.current?.focus()
-        }
-    })
-
-    const sectionsComponentsMap = [
-        {
-            component: <Dashboard />,
-            title: "Dashboard",
-        },
-        {
-            component: <Products />,
-            title: "Produtos",
-        },
-    ]
-
-    const toggleMenu = (index: number) => {
-        if (expandedMenus.includes(index)) {
-            setExpandedMenus(expandedMenus.filter((item) => item !== index))
-        } else {
-            setExpandedMenus([...expandedMenus, index])
-        }
-    }
-
-    const isMenuExpanded = (index: number) => {
-        return expandedMenus.includes(index)
-    }
-
+    const [activeSection, setActiveSection] = useState(0);
+    const { firstDateOfMonth, lastDateOfMonth } = getFirstLastDayOfMonth(new Date());
+    console.log("firstDateOfMonth", firstDateOfMonth.toISOString());
     return (
-        <div className="h-screen w-full relative flex">
-            <div className="sidebar bg-background h-screen sticky top-0 left-0 p-4 flex flex-col items-center justify-between gap-4">
-                <div className="top w-full flex flex-col gap-4">
-                    <div className="flex items-center justify-between w-full border-b-gray-200 border-b pb-4">
-                        <span className="text-2xl">🥝</span>
-                        <PanelLeft className="text-gray-400" size={"1.7rem"} cursor={"pointer"} />
+        <div className="w-full h-screen relative flex items-center justify-between">
+            <div className="sidebar p-6 flex flex-col items-center justify-start left-0 top-0 sticky w-[330px] h-full bg-white border-r border-gray-200 gap-6">
+                <div className="h-full w-full flex flex-col gap-6">
+                    <div className="w-full flex items-center justify-start gap-4 border-b border-gray-300 pb-6">
+                        <div className="photo">
+                            <img className="h-12 w-12 rounded-full" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Logo" />
+                        </div>
+                        <div className="flex flex-col items-start justify-center">
+                            <h1 className="font-semibold text-xl">Paulo Afonso</h1>
+                            <p className="text-lg text-gray-500">Hookie</p>
+                        </div>
                     </div>
-                    <div className="search-field w-full border-b-gray-200 border-b pb-4">
-                        <Input
-                            ref={searchInputRef}
-                            leftSection={<SearchIcon size={"1.1rem"} />}
-                            rightSection={<Kbd>K</Kbd>}
-                            type="search"
-                            placeholder="Pesquisar"
-                        />
-                    </div>
-                </div>
-                <div className="middle w-full">
-                    <nav className="flex flex-col space-y-1">
-                        <div
-                            onClick={() => setActiveSection(0)}
-                            className={`flex items-center px-3 py-2 rounded-md cursor-pointer transition-colors ${activeSection === 0 ? "active" : ""}`}
-                        >
-                            <ChartNoAxesColumnIncreasing className="mr-2" size={18} />
+                    <nav className="w-full flex flex-col items-start justify-center gap-7 border-b border-b-gray-300 pb-6">
+                        <li onClick={() => setActiveSection(0)} className={activeSection == 0 ? "selected" : ""}>
+                            <MdDashboard />
                             <span>Dashboard</span>
-                        </div>
-
-                        <div className="flex flex-col w-full">
-                            <div
-                                onClick={() => toggleMenu(1)}
-                                className={`flex w-full items-center justify-between px-3 py-2 rounded-md cursor-pointer transition-colors ${activeSection === 1 && !isMenuExpanded(1) ? "active" : ""}`}
-                            >
-                                <div className="flex items-center w-full">
-                                    <Package className="mr-2" size={18} />
-                                    <span>Produtos</span>
-                                </div>
-                                {isMenuExpanded(1) ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                            </div>
-
-                            {isMenuExpanded(1) && (
-                                <div className="ml-7 mt-1 flex flex-col space-y-1 border-l-2 border-gray-100 pl-2 w-full">
-                                    <div
-                                        onClick={() => setActiveSection(1)}
-                                        className={`flex items-center px-3 py-1.5 rounded-md cursor-pointer transition-colors ${activeSection === 1 ? "active" : ""}`}
-                                    >
-                                        <span className="text-sm">Gerenciar</span>
-                                    </div>
-                                    <div
-                                        onClick={() => setActiveSection(1.1)}
-                                        className={`flex items-center px-3 py-1.5 rounded-md cursor-pointer transition-colors ${activeSection === 1.1 ? "active" : ""}`}
-                                    >
-                                        <span className="text-sm">Variações</span>
-                                    </div>
-                                    <div
-                                        onClick={() => setActiveSection(1.2)}
-                                        className={`flex items-center px-3 py-1.5 rounded-md cursor-pointer transition-colors ${activeSection === 1.2 ? "active" : ""}`}
-                                    >
-                                        <span className="text-sm">Acréscimos</span>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="flex flex-col w-full">
-                            <div
-                                onClick={() => toggleMenu(2)}
-                                className={`flex w-full items-center justify-between px-3 py-2 rounded-md cursor-pointer transition-colors ${activeSection === 2 && !isMenuExpanded(2) ? "active" : ""}`}
-                            >
-                                <div className="flex w-full items-center">
-                                    <File className="mr-2" size={18} />
-                                    <span>Relatórios</span>
-                                </div>
-                                {isMenuExpanded(2) ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                            </div>
-                            {isMenuExpanded(2) && (
-                                <div className="ml-7 mt-1 flex flex-col space-y-1 border-l-2 border-gray-100 pl-2 w-full">
-                                    <div
-                                        onClick={() => setActiveSection(2.1)}
-                                        className={`flex items-center px-3 py-1.5 rounded-md cursor-pointer transition-colors ${activeSection === 2.1 ? "active" : ""}`}
-                                    >
-                                        <span className="text-sm">Vendas</span>
-                                    </div>
-                                    <div
-                                        onClick={() => setActiveSection(2.2)}
-                                        className={`flex items-center px-3 py-1.5 rounded-md cursor-pointer transition-colors ${activeSection === 2.2 ? "active" : ""}`}
-                                    >
-                                        <span className="text-sm">Estoque</span>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div
-                            onClick={() => setActiveSection(3)}
-                            className={`flex items-center px-3 py-2 rounded-md cursor-pointer transition-colors ${activeSection === 3 ? "active" : ""}`}
-                        >
-                            <MenuIcon className="mr-2" size={18} />
-                            <span>Catálogo</span>
-                        </div>
+                        </li>
+                        <li onClick={() => setActiveSection(1)} className={activeSection == 1 ? "selected" : ""}>
+                            <BoxIcon />
+                            <span>Produtos</span>
+                        </li>
+                        <li onClick={() => setActiveSection(2)} className={activeSection == 2 ? "selected" : ""}>
+                            <MdOutlineRestaurantMenu />
+                            <span>Catálogos</span>
+                        </li>
+                        <li onClick={() => setActiveSection(3)} className={activeSection == 3 ? "selected" : ""}>
+                            <FaUserFriends />
+                            <span>Usuários</span>
+                        </li>
                     </nav>
                 </div>
-                <div className="bottom w-full border-t-gray-200 border-t py-4 flex items-center justify-between gap-4">
-                    <div className="photo min-w-[60px] h-[60px] overflow-hidden rounded-full">
-                        <img
-                            className="w-full h-full object-cover"
-                            src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            alt="Foto do usuário"
-                        />
-                    </div>
-                    <div className="user-infos w-full text-left">
-                        <h3 className="text-lg font-medium">Paulo Afonso</h3>
-                        <p className="text-sm text-gray-400" title="Empresa">
-                            Hookie
-                        </p>
-                    </div>
-                    <Menu shadow="md" width={200}>
-                        <Menu.Target>
-                            <div className="options">
-                                <EllipsisVertical color="#4ba54a" cursor={"pointer"} />
-                            </div>
-                        </Menu.Target>
-                        <Menu.Dropdown>
-                            <Menu.Item leftSection={<ArrowLeftRight />}>Alternar usuário</Menu.Item>
-                            <Menu.Item leftSection={<Settings />}>Configurações</Menu.Item>
-                            <Menu.Item leftSection={<LogOut />}>Sair</Menu.Item>
-                        </Menu.Dropdown>
-                    </Menu>
-                </div>
             </div>
-            <div className="wrapper-content relative flex flex-col w-full bg-background">
-                <div className="topbar sticky top-0 h-16 w-full bg-background flex items-center justify-between p-4">
-                    <h1 className="text-xl font-bold text-secondary">
-                        {activeSection === 1.1
-                            ? "Produtos - Variações"
-                            : activeSection === 1.2
-                                ? "Produtos - Acréscimos"
-                                : activeSection === 2.1
-                                    ? "Relatórios - Vendas"
-                                    : activeSection === 2.2
-                                        ? "Relatórios - Estoque"
-                                        : sectionsComponentsMap[Math.floor(activeSection)]?.title || ""}
-                    </h1>
-                    <div className="right flex gap-4">
-                        <Bell className="text-gray-500" cursor={"pointer"} />
-                        <ThemeToggle />
+            <div className="content-wrapper flex items-center justify-center flex-col w-full h-full bg-background">
+                <div className="header-content w-full bg-white px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <div className="flex flex-col">
+                        <h1 className="font-semibold text-xl">{sectionsMap[activeSection].name}</h1>
+                        <p className="text-gray-500">{sectionsMap[activeSection].description}</p>
                     </div>
+                    {
+                        activeSection == 0 && (
+                            <div className="flex gap-4 items-center justify-center">
+                                <p className="text-gray-500">Filtrar de:</p>
+                                <Input type="datetime-local" value={formatDateForInput(firstDateOfMonth)} />
+                                <p>Até:</p>
+                                <Input type="datetime-local" value={formatDateForInput(lastDateOfMonth)} />
+                            </div>
+                        )
+                    }
                 </div>
-                <div className="container-content w-full h-full bg-white rounded-t-2xl p-4">
-                    {sectionsComponentsMap[Math.floor(activeSection)]?.component || <div>Conteúdo não encontrado</div>}
+                <div className="content w-full h-full p-4">
+                    {sectionsMap[activeSection].component}
                 </div>
             </div>
         </div>

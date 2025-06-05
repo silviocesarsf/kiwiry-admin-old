@@ -12,6 +12,7 @@ import { theme as baseTheme } from './theme';
 import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/ForgotPassword';
 import Onboarding from './pages/Onboarding';
+import '@mantine/charts/styles.css';
 
 const colorSchemeManager = localStorageColorSchemeManager({ key: 'kiwire-color-scheme' });
 createRoot(document.getElementById('root')!).render(

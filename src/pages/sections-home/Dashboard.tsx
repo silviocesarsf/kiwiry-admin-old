@@ -1,150 +1,146 @@
-import { Activity, ChevronRight, HandCoins, Info } from "lucide-react";
+import { Badge, ScrollArea, Table } from "@mantine/core";
+import DashboardSimpleCardWithInfo from "../../components/DashboardSimpleCardWithInfo";
 import "../../styles/Dashboard.css";
-import { Table, Tooltip } from "@mantine/core";
+import { LineChart } from "@mantine/charts"
+import { GoListUnordered } from "react-icons/go"
+import DashboardSimpleCard from "../../components/DashboardSimpleCard";
 
 export default function Dashboard() {
-
-    const recentsOrders = [
+    const mostSelledProductsData = [
         {
-            id: "#2813",
-            name: "Coca-Cola",
-            price: "R$ 1.000,00",
-            status: "delivered",
-            date: "22/11 12:11"
+            name: "Big-Mac",
+            sellCount: 393.9,
         },
         {
-            id: "#324",
-            name: "Coca",
-            price: "R$ 1.000,00",
-            status: "delivered",
-            date: "22/11 12:11"
+            name: "Big-Mac",
+            sellCount: 93,
         },
         {
-            id: "#139",
-            name: "Pão com presunto",
-            price: "R$ 38,90",
-            status: "pending",
-            date: "22/11 12:11"
+            name: "Big-Mac",
+            sellCount: 145,
         },
         {
-            id: "#139",
-            name: "Pão com presunto",
-            price: "R$ 38,90",
-            status: "pending",
-            date: "22/11 12:11"
+            name: "Big-Mac",
+            sellCount: 15.21,
         },
         {
-            id: "#139",
-            name: "Pão com presunto",
-            price: "R$ 38,90",
-            status: "pending",
-            date: "22/11 12:11"
+            name: "Big-Mac",
+            sellCount: 1571,
         },
         {
-            id: "#139",
-            name: "Pão com presunto",
-            price: "R$ 38,90",
-            status: "pending",
-            date: "22/11 12:11"
+            name: "Big-Mac",
+            sellCount: 393.9
         }
     ];
 
-    return (
-        <div className="w-full h-full flex flex-col gap-6">
-            <div className="top flex items-center justify-between border-b-gray-200 border-b py-6">
-                <div className="flex flex-col gap-2">
-                    <p className="text-gray-400 text-md">Faturamento do Período</p>
-                    <h1 className="text-5xl font-bold text-black/60">R$ 2.990,90</h1>
-                </div>
-                <div className="">
-                    <ChevronRight size={"2rem"} className="transition-all duration-300 hover:text-primary cursor-pointer" />
-                </div>
-            </div>
-            <div className="filters flex items-center justify-start gap-4">
-                <nav className="bg-background px-6 py-2 rounded-full flex items-center justify-center gap-6 border-border border">
-                    <li className="active">Hoje</li>
-                    <li>Ontem</li>
-                    <li>Essa semana</li>
-                    <li>Esse mês</li>
-                </nav>
-            </div>
-            <div className="grid-container grid gap-4 grid-cols-3 h-full">
-                <div className="sell card col-span-2">
-                    <div className="title">
-                        <div className="left">
-                            <HandCoins />
-                            <h1>Vendas</h1>
-                        </div>
-                        <div className="right">
-                            <Tooltip label="Veja o horário que sua empresa mais vende.">
-                                <Info />
-                            </Tooltip>
-                        </div>
-                    </div>
-                    <div className="content">
+    const ordersData = [
+        {
+            orderId: "1",
+            clientName: "Paulo Afonso",
+            status: "Entregue"
+        },
+        {
+            orderId: "2",
+            clientName: "Maria Souza",
+            status: "Pendente"
+        },
+        {
+            orderId: "3",
+            clientName: "Carlos Lima",
+            status: "Cancelado"
+        },
+        {
+            orderId: "4",
+            clientName: "Ana Clara",
+            status: "Entregue"
+        },
+        {
+            orderId: "5",
+            clientName: "João Pedro",
+            status: "Pendente"
+        },
+        {
+            orderId: "5",
+            clientName: "João Pedro",
+            status: "Pendente"
+        },
+        {
+            orderId: "5",
+            clientName: "João Pedro",
+            status: "Pendente"
+        },
+        {
+            orderId: "5",
+            clientName: "João Pedro",
+            status: "Pendente"
+        },
+    ];
 
-                    </div>
+    return (
+        <div className="w-full h-full flex-col flex items-center justify-start gap-5">
+            <div className="grid w-full grid-cols-3 gap-5">
+                <DashboardSimpleCardWithInfo title={"Clientes"} value={"12"} />
+                <DashboardSimpleCardWithInfo title={"Receita Mensal"} value={"16"} />
+                <DashboardSimpleCardWithInfo title={"Pedidos Cancelados"} value={"10"} />
+                <div className="col-span-3 flex items-center justify-between gap-5">
+                    <DashboardSimpleCardWithInfo title={"Ticket Médio"} value={"194"} />
+                    <DashboardSimpleCardWithInfo title={"Lucro real"} value={"194"} />
                 </div>
-                <div className="orders card row-span-2">
-                    <div className="title">
-                        <div className="left">
-                            <Activity />
-                            <h1>Pedidos</h1>
-                        </div>
-                        <div className="right">
-                            <Tooltip label="Pedidos Recentes">
-                                <Info />
-                            </Tooltip>
-                        </div>
+            </div>
+            <div className="flex items-center justify-between w-full h-full gap-5">
+                <DashboardSimpleCard className="flex-1">
+                    <div className="top flex items-center justify-between w-full">
+                        <h1 className="text-2xl text-gray-500 font-medium">Vendas</h1>
                     </div>
-                    <div className="content p-0!">
-                        <Table striped highlightOnHover verticalSpacing={"lg"} className="text-gray-500 w-full">
+                    <div className="w-full flex items-end justify-center gap-6">
+                        <LineChart
+                            h={300}
+                            data={mostSelledProductsData}
+                            series={[{ name: 'sellCount', label: 'Vendas' }]}
+                            dataKey="name"
+                            type="gradient"
+                            gradientStops={[
+                                { offset: 0, color: 'yellow.5' },
+                                { offset: 50, color: 'green.5' },
+                                { offset: 100, color: 'green.4' },
+                            ]}
+                            strokeWidth={4}
+                            curveType="bump"
+                            yAxisProps={{ domain: [-25, 40] }}
+                            valueFormatter={(value) => `${value} Vendas`}
+                        />
+                    </div>
+                </DashboardSimpleCard>
+                <DashboardSimpleCard className="flex-[.5] !p-0">
+                    <ScrollArea h={450}>
+                        <Table striped withColumnBorders verticalSpacing={"lg"} horizontalSpacing={"xl"} highlightOnHover stickyHeader>
+                            <Table.Thead>
+                                <Table.Tr className="text-gray-500">
+                                    <Table.Th className="!text-center text-md">Cód.</Table.Th>
+                                    <Table.Th className="!text-center text-md">Cliente</Table.Th>
+                                    <Table.Th className="!text-center text-md">Status</Table.Th>
+                                    <Table.Th className="!text-center text-md">Ver</Table.Th>
+                                </Table.Tr>
+                            </Table.Thead>
                             <Table.Tbody>
-                                {recentsOrders.map((order) => (
-                                    <Table.Tr key={order.id}>
-                                        <Table.Td>{order.id}</Table.Td>
-                                        <Table.Td>{order.name}</Table.Td>
-                                        <Table.Td>{order.price}</Table.Td>
-                                        <Table.Td>{order.date}</Table.Td>
-                                        <Table.Td><span className="bg-green-500/80 text-white px-2 py-1 rounded-full">{order.status}</span></Table.Td>
+                                {ordersData.map((order) => (
+                                    <Table.Tr key={order.orderId}>
+                                        <Table.Td>#{order.orderId}</Table.Td>
+                                        <Table.Td>{order.clientName}</Table.Td>
+                                        <Table.Td align="center">
+                                            <Badge color={order.status === "Entregue" ? "green" : order.status === "Pendente" ? "yellow" : "red"}>{order.status}</Badge>
+                                        </Table.Td>
+                                        <Table.Td>
+                                            <span className="cursor-pointer text-xl">
+                                                <GoListUnordered />
+                                            </span>
+                                        </Table.Td>
                                     </Table.Tr>
                                 ))}
                             </Table.Tbody>
                         </Table>
-                    </div>
-                </div>
-                <div className="card">
-                    <div className="title">
-                        <div className="left">
-                            <Activity />
-                            <h1>Teste Titulo</h1>
-                        </div>
-                        <div className="right">
-                            <Tooltip label="Teste">
-                                <Info />
-                            </Tooltip>
-                        </div>
-                    </div>
-                    <div className="content">
-
-                    </div>
-                </div>
-                <div className="card">
-                    <div className="title">
-                        <div className="left">
-                            <Activity />
-                            <h1>Teste Titulo</h1>
-                        </div>
-                        <div className="right">
-                            <Tooltip label="Teste">
-                                <Info />
-                            </Tooltip>
-                        </div>
-                    </div>
-                    <div className="content">
-
-                    </div>
-                </div>
+                    </ScrollArea>
+                </DashboardSimpleCard>
             </div>
         </div>
     )
